@@ -2,40 +2,53 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using DatingApp.API.Data;
+using DatingApp.API.DTOs;
 using DatingApp.API.Entities;
+using DatingApp.API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatingApp.API.Controllers
 {
-
+    [Authorize]
     public class UsersController : BaseApiController
     {
-        private readonly DataContext _context;
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-
-        public UsersController(DataContext context)
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
-            _context = context;
+
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
 
 
         [HttpGet]
-        [AllowAnonymous]
-        public ActionResult<IEnumerable<AppUser>> GetUsers()
+        
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
-            var users = _context.Users.ToList();
-            return users;
+            var users = await _userRepository.GetMembersAsync();
+
+            
+            return Ok(users);
         }
 
-        [Authorize]
-        [HttpGet("{id}")]
+   
+        [HttpGet("{username}")]
         
-        public ActionResult<AppUser> GetUser(int id)
+        public async  Task<ActionResult<MemberDto>> GetUser(string username)
         {
-            return _context.Users.Find(id);
+            var user = await _userRepository.GetMemberAsync(username);
+            if (user == null)
+                return NotFound($"{username} adına sahip bir kullanıcı yok.");
+            return user;
+
+
+
 
            
         }
