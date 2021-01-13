@@ -43,6 +43,12 @@ namespace DatingApp.API.Entities
         public ICollection<UserLike> LikedByUsers { get; set; }
         public ICollection<UserLike> LikedUsers { get; set; }
 
+        // Gönderilen Mesajlar
+        public ICollection<Message> MessagesSent { get; set; }
+
+        // Alınan Mesajlar
+        public ICollection<Message> MessagesReceived { get; set; }
+
 
     }
 }

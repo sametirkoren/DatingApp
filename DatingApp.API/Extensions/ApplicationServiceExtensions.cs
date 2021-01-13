@@ -21,6 +21,7 @@ namespace DatingApp.API.Extensions
             
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ILikesRepository, LikesRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<LogUserActivity>();
             services.AddScoped<IPhotoService, PhotoService>();
