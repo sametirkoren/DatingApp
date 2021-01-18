@@ -83,16 +83,13 @@ namespace DatingApp.API.Data
                     message.DateRead = DateTime.UtcNow;
                 }
 
-                await _context.SaveChangesAsync();
+              
             }
 
             return _mapper.Map<IEnumerable<MessageDto>>(messages);
         }
 
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
+       
 
         public void RemoveConnection(Connection connection)
         {
@@ -115,6 +112,11 @@ namespace DatingApp.API.Data
         public async Task<Connection> GetConnection(string connectionId)
         {
             return await _context.Connections.FindAsync(connectionId);
+        }
+
+        public async Task<Group> GetGroupForConnection(string connectionId)
+        {
+            return await _context.Groups.Include(c => c.Connections).Where(c => c.Connections.Any(x => x.ConnectionId == connectionId)).FirstOrDefaultAsync();
         }
     }
 }

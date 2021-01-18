@@ -13,7 +13,7 @@ namespace DatingApp.API.Interfaces
         void Update(AppUser user);
 
 
-        Task<bool> SaveAllAsync();
+     
 
         Task<IEnumerable<AppUser>> GetUsersAsync();
 
